@@ -13,6 +13,7 @@ import pandas as pd
 from sqlalchemy import create_engine, select, delete, Table, MetaData
 import sqlalchemy
 import os
+from DeviceConfig import DeviceConfig
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -36,6 +37,18 @@ def time():
 
     return json.dumps(t)
 
+@app.route('/getConfig', methods=['POST'])
+def getConfig():
+    configTab = DeviceConfig(engine)
+    jsonRes = {"status": "ERROR"}
+    if request.is_json:
+        jsonReq = request.get_json()
+        device = jsonReq.get("device", None)
+        type = jsonReq.get("type", "Unknown")
+        if device != None:
+            jsonRes = configTab.getConfig(device, type)
+    return json.dumps(jsonRes)
+        
 
 @app.route('/sampleSubmit', methods=['POST'])
 def jsonSubmit():
