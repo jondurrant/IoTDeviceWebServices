@@ -47,7 +47,7 @@ def getConfig():
         type = jsonReq.get("type", "Unknown")
         if device != None:
             jsonRes = configTab.getConfig(device, type)
-    return json.dumps(jsonRes)
+    return jsonRes
         
 
 @app.route('/sampleSubmit', methods=['POST'])

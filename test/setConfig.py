@@ -27,9 +27,12 @@ j = {}
 for a in range(3, len(sys.argv)):
     (k, s, v) = sys.argv[a].partition("=")
     try:
-        v = float(v)
+        v = int(v)
     except:
-        pass
+        try:
+            v = float(v)
+        except:
+            pass
     if v == "true":
         v = True
     if v == "false":
