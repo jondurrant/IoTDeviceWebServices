@@ -132,6 +132,17 @@ def updateDeviceStatus(sample, addr):
         df.to_sql('DeviceStatus', con=conn, if_exists='append', index=False)
         conn.commit()
 
+#setup DB connection 
+dbHost=os.environ.get("DB_HOST", "localhost")
+dbPort=os.environ.get("DB_PORT", "3306")
+dbSchema=os.environ.get("DB_SCHEMA", "root")
+dbUser=os.environ.get("DB_USER", "root")
+dbPasswd=os.environ.get("DB_PASSWD", "root")
+connectString = "mysql+mysqlconnector://%s:%s@%s:%s/%s"%(dbUser, dbPasswd, dbHost, dbPort, dbSchema)
+engine = create_engine(connectString)
+
+
+
 if __name__ == "__main__":
     app.secret_key = 'DRJONEA'
     app.config['SESSION_TYPE'] = 'filesystem'
@@ -141,13 +152,6 @@ if __name__ == "__main__":
     print(f"Hostname: {hostname}")
     print(f"IP Address: {ip_address}")
     
-    #setup DB connection 
-    dbHost=os.environ.get("DB_HOST", "localhost")
-    dbPort=os.environ.get("DB_PORT", "3306")
-    dbSchema=os.environ.get("DB_SCHEMA", "root")
-    dbUser=os.environ.get("DB_USER", "root")
-    dbPasswd=os.environ.get("DB_PASSWD", "root")
-    connectString = "mysql+mysqlconnector://%s:%s@%s:%s/%s"%(dbUser, dbPasswd, dbHost, dbPort, dbSchema)
-    engine = create_engine(connectString)
+    
     
     app.run(host="0.0.0.0", port="5080")
