@@ -10,7 +10,7 @@ hostname = "localhost"
 port = 5000
 
 if len(sys.argv) < 3:
-    print("Usage getConfig <device> <type> [<host> <port>]")
+    print("Usage getConfig <device> <type> [<host> <port> <prefix>]")
     sys.exit(0)
     
 device = sys.argv[1]
@@ -22,8 +22,17 @@ if len(sys.argv) >= 4:
 
 if len(sys.argv) >= 5:
     port = int(sys.argv[4])
+    
+if len(sys.argv) >= 6:
+    prefix = "/" + sys.argv[5] + "/"
+else:
+    prefix = "/"
 
-url = ('http://%s:%d/getConfig'%(hostname, port))
+
+if (port % 1000) == 443:
+    url = ('https://%s:%d%sgetConfig'%(hostname, port, prefix))
+else:    
+    url = ('http://%s:%d%sgetConfig'%(hostname, port, prefix))
 newHeaders = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
 
